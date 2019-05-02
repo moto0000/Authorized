@@ -17,3 +17,13 @@ extension Future where T: Resource {
     }
     
 }
+
+extension Future where T: Authorizable {
+
+    public func authorize<R>(_ resource: R, _ action: R.Action, on container: Container) -> Future<R> where R: Resource {
+        return flatMap { user in
+            let permissions = try container.make(PermissionVerifying.self)
+            return permissions.authorize(resource, action, as: user, on: container)
+        }
+    }
+}

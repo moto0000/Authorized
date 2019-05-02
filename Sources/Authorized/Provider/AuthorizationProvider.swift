@@ -9,6 +9,8 @@ public struct AuthorizationProvider: Provider {
             let config = try container.make(AuthorizationConfig.self)
             return try config.makeManager()
         })
+
+        services.register(AuthorizationCache())
     }
     
     public func didBoot(_ container: Container) throws -> EventLoopFuture<Void> {
